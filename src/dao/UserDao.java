@@ -9,7 +9,7 @@ public interface UserDao {
 	//用户登录
 	public String login(String UserName,String Password);
 	public boolean deleteUser(String UserId);
-	public void updateUser(User u);
+	public boolean updateUser(User u);
 	public User selectUser(String UserName);
 	//判断是否存在该用户
 	public boolean senseUser(String UserID); 

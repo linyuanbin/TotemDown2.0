@@ -97,13 +97,23 @@ public class UserImplement implements UserDao {
 	}
 
 	@Override
-	public void updateUser(User u) { // 更新
+	public boolean updateUser(User u) { // 更新
 		if (senseUser(u.getUserID())) { // 如果用户存在则更新
-			Session session = SessionAnnotation.getSession();
-			session.beginTransaction();
-			session.update(u);
-			session.getTransaction().commit();
-			SessionAnnotation.closeSession();
+			try{
+				Session session = SessionAnnotation.getSession();
+				session.beginTransaction();
+				session.update(u);
+				session.getTransaction().commit();
+				SessionAnnotation.closeSession();
+				return true;
+			}catch(Exception e){
+				System.out.println(e);
+				System.out.println("updateUser失败");
+				SessionAnnotation.closeSession();
+				return false;
+			}
+		}else{
+			return false;
 		}
 	}
 

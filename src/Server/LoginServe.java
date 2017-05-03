@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import action.PushPicture;
 import dao.UserDao;
 import daoimplement.UserImplement;
 import jsonUtil.CreateJson;
@@ -56,7 +57,7 @@ public class LoginServe extends HttpServlet {
 			}
 
 			User u = CreateJson.getUser(resource.toString());
-			if (u.getState().equals("login")) {                 // 登录
+			if ((u.getState().trim()).equals("login")) {                 // 登录
 				String UserId = d.login(u.getUserName(), u.getUserPassword());
 				String jsonUser="";
 				if(UserId.equals("")){
@@ -78,34 +79,40 @@ public class LoginServe extends HttpServlet {
 //				System.out.println(jsonUser.toString());
 //				msg=jsonUser.toString().trim();
 				msg=u6.toString();
-				out.write(msg);  //登录是向用户反馈User基本信息
+				out.write(jsonUser);  //登录是向用户反馈User基本信息
 				//out.println(msg);
 				}
 				
-			} else if (u.getState().equals("register")) {     // 注册
+			} else if ((u.getState().trim()).equals("register")) {     // 注册
 				String userID = d.register(u);
 				System.out.println("注册情况：" + userID);
 				if (!userID.equals("")) {// 如果注册成功
 					//msg = u.getUserID(); //注册成功反馈UserId 
 					u.setState("true");
 					String userfile=CreateJson.getUserJson(u);
+					System.out.println("注册成功用户信息："+userfile);
 					out.write(userfile);
 				} else {
-					msg = "false";       //注册失败回馈
-					out.write(msg);
+					//msg = "false";       //注册失败回馈
+					u.setState("false");
+					String s=CreateJson.getUserJson(u);
+					System.out.println("注册失败用户信息："+s); 
+					out.write(s);
 				}
-			} else if (u.getState().equals("update")) {        // 更新用户
+			} else if ((u.getState().trim()).equals("update")) {        // 更新用户
 				/*
 				 * String UserId=d.getUserID(u.getUserTel());
 				 * System.out.println("查询用户id"+UserId);
 				 */
 				d.updateUser(u);
 				System.out.println("用户生日：" + u.getUserBirthday().toLocaleString());
-			}else if(u.getState().equals("request  ")){       //推送请求
-				 
-				
+			}else if((u.getState().trim()).equals("request".trim())){       //推送请求
+				 String pushPictureJson=PushPicture.getPush(u.getUserID());
+				 pushPictureJson="["+pushPictureJson+"]";
+				 System.out.println("推送："+pushPictureJson); 
+				 out.write(pushPictureJson);
 			}else if(u.getState().equals("mark")){             //打标签
-				User user=d.showUser(u.getUserID());
+				User user=d.showUser(u.getUserID()); 
 				Picture p=CreateJson.getPicture(resource.toString());
 				user.getPictures().add(p);
 			}

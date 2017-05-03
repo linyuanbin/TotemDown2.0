@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
+import model.Mark;
 import model.Picture;
 import model.User;
 
@@ -35,17 +36,6 @@ public class CreateJson {
 		return u;
 	}
 	
-	public static Picture getPicture(String json){
-		Picture p=new Picture();
-		Gson gson=gsons.get();
-		if(gson==null){
-			gson=new Gson();
-			gsons.set(gson);
-		}
-		p=gson.fromJson(json,Picture.class);
-		return p;
-	}
-	
 	public static String getUserJson(User u){
 		
 		try{
@@ -58,11 +48,57 @@ public class CreateJson {
 		
 		String str=gson.toJson(u);
 		System.out.println("createJson"+str);
-		
 		return str;
 		}catch(Exception e){
-			System.out.println("getObjectJson异常");
+			System.out.println("getUserJson异常");
 			System.out.println(e);
+			return "";
+		}
+	}
+	
+	public static Picture getPicture(String json){
+		Picture p=new Picture();
+		Gson gson=gsons.get();
+		if(gson==null){
+			gson=new Gson();
+			
+			gsons.set(gson);
+		}
+		
+		p=gson.fromJson(json,Picture.class);
+		return p;
+	}
+	
+	public static String getPictureJson(Picture p){
+		try{
+		String pictureJson="";
+		Gson gson=gsons.get();
+		if(gson==null){
+			gson=new Gson();
+		}
+		pictureJson=gson.toJson(p);
+		return pictureJson;
+		}catch(Exception e){
+			System.out.println(e);
+			System.out.println("getPictureJson异常！");
+			return "";
+		}
+	}
+	
+	public static String getmarkJson(Mark m){
+		
+		try{
+			Gson gson=gsons.get();
+			if(gson==null){
+				gson=new Gson();
+				gsons.set(gson);
+			}
+			String markJson=gson.toJson(m);
+			System.out.println(markJson);
+			return markJson;
+		}catch(Exception e){
+			System.out.println(e);
+			System.out.println("getmarkJson异常");
 			return "";
 		}
 	}

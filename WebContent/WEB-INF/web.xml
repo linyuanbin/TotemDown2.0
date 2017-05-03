@@ -27,4 +27,14 @@
   <servlet-name>LoginServe</servlet-name>
   <url-pattern>/LoginServe</url-pattern>
   </servlet-mapping>
+  
+  
+  <servlet>
+  <servlet-name>managerServer</servlet-name>
+  <servlet-class>Server.ManagerServer</servlet-class> <!-- com.edu.qufu.dinner.servlet. -->
+  </servlet>
+  <servlet-mapping>
+  <servlet-name>managerServer</servlet-name>
+  <url-pattern>/managerServer</url-pattern>
+  </servlet-mapping>
 </web-app>

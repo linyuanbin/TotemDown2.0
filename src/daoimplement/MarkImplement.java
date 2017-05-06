@@ -140,7 +140,15 @@ public class MarkImplement implements MarkDao{
 		}
 		
 	}
-
+	
+/*	public static Manager setManager(Manager u){
+		String Stat;
+		Manager m=new Manager();
+		
+		return m;
+		
+	}
+*/
 
 	
 

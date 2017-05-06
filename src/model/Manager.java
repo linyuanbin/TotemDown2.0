@@ -8,12 +8,18 @@ public class Manager {
 	private String mEmail; //邮箱
 	private String mTel;//管理员手机号
 	private String mHeadPort; //头像
-	private String mSex;
-	private int mAge;
+	private String mSex;//性别
+	private int mAge;//年龄
 	private String mWorkNum;//员工号
+	private String state;
 	
-	
-	public String getmIdCard() {
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	public String getmIdCard() { 
 		return mIdCard;
 	}
 	public void setmIdCard(String mIdCard) {
@@ -59,7 +65,7 @@ public class Manager {
 		return mAge;
 	}
 	public void setmAge(int mAge) {
-		this.mAge = mAge;
+		this.mAge = mAge; 
 	}
 	public String getmWorkNum() {
 		return mWorkNum;
@@ -72,9 +78,8 @@ public class Manager {
 	public String toString() {
 		return "Manager [mIdCard=" + mIdCard + ", mName=" + mName + ", mPassword=" + mPassword + ", mEmail=" + mEmail
 				+ ", mTel=" + mTel + ", mHeadPort=" + mHeadPort + ", mSex=" + mSex + ", mAge=" + mAge + ", mWorkNum="
-				+ mWorkNum + "]";
+				+ mWorkNum + ", state=" + state + "]";
 	}
 	
-	
-	
+
 }

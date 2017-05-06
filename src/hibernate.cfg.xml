@@ -33,7 +33,7 @@
 	 <mapping resource="model/User.hbm.xml"/>
 	 <mapping resource="model/Picture.hbm.xml"/>
 	 <mapping resource="model/Mark.hbm.xml"/>
+	  <mapping resource="model/Manager.hbm.xml"/>
 	
-    
     </session-factory>
 </hibernate-configuration>

@@ -111,15 +111,23 @@ public class LoginServe extends HttpServlet {
 				 pushPictureJson="["+pushPictureJson+"]";
 				 System.out.println("推送："+pushPictureJson); 
 				 out.write(pushPictureJson);
+			}else if((u.getState().trim()).equals("request1".trim())){       //推送一张
+				 String pushPictureJson=PushPicture.getSinglePush(u.getUserID());
+				 pushPictureJson="["+pushPictureJson+"]";
+				 System.out.println("推送："+pushPictureJson); 
+				 out.write(pushPictureJson);
 			}else if(u.getState().equals("mark")){             //打标签
 				User user=d.showUser(u.getUserID()); 
 				Picture p=CreateJson.getPicture(resource.toString());
 				user.getPictures().add(p);
+			}else{
+				String str2="500 NotFound"; 
+				out.write(str2);
 			}
 
 		}else{
 			System.out.println("登入服务器失败");
-			msg = "";       //注册失败回馈
+			msg = "404 NotFound";       //注册失败回馈
 			out.write(msg);
 		}
 		// out.print(msg); //传送给客户端数据

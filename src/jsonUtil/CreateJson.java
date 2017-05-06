@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
+import model.Manager;
 import model.Mark;
 import model.Picture;
 import model.User;
@@ -99,6 +100,35 @@ public class CreateJson {
 		}catch(Exception e){
 			System.out.println(e);
 			System.out.println("getmarkJson“Ï≥£");
+			return "";
+		}
+	}
+	
+	
+	public static Manager getManager(String json){ 
+		Manager manager=new Manager(); 
+		Gson gson=gsons.get(); 
+		if(gson==null){ 
+			gson=new Gson();   
+			gsons.set(gson);   
+		}
+		manager=gson.fromJson(json, Manager.class); 
+		return manager;
+	}
+	
+	public static String getManagerJson(Manager m){
+		try{
+			String managerJson="";
+			Gson gson=gsons.get();
+			if(gson==null){
+				gson=new Gson();
+				gsons.set(gson);
+			}
+			managerJson=gson.toJson(m);
+			return managerJson;
+		}catch(Exception e){
+			System.out.println(e);
+			System.out.println("getManagetJson“Ï≥£");
 			return "";
 		}
 	}

@@ -20,8 +20,6 @@ public class UploadPicture extends HttpServlet{ //实现用户头像上传
 	in.readLine(file, 10, 20);
 	in.read(file);
 	//in.read(file);
-		
-		
 	}
 	
 	@Override
@@ -30,5 +28,4 @@ public class UploadPicture extends HttpServlet{ //实现用户头像上传
 	}
 	
 
-	
 }

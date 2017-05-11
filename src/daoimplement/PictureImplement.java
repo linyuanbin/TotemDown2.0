@@ -11,6 +11,7 @@ import org.hibernate.Session;
 
 import dao.PictureDao;
 import hibernateutil.SessionAnnotation;
+import jsonUtil.CreateJson;
 import model.Picture;
 import util.RandomString;
 
@@ -156,6 +157,44 @@ public class PictureImplement implements PictureDao {
 		}
 	
 	}
+
+	@Override
+	public String selectPicturesFFN() {  //导出最终标签化结果
+		Session session=SessionAnnotation.getSession();
+		session.beginTransaction();
+		//Set<Picture> pictures=new HashSet<Picture>();
+		List<Picture> pictures=new ArrayList<>();
+		try{
+			String hql="from Picture where FinalMarkName is not null";
+			pictures=session.createQuery(hql).list();
+			StringBuilder sb2=new StringBuilder();
+			if(pictures.size()!=0){
+			for(int i=0;i<pictures.size();i++){ 
+				if(i<(pictures.size()-1)){  
+					String s=CreateJson.getPictureJson(pictures.get(i));
+					sb2.append(s+",");
+				}else{
+					String s=CreateJson.getPictureJson(pictures.get(i));
+					sb2.append(s);
+				}
+			}
+			System.out.println("标签结果："+sb2);
+			session.getTransaction().commit();
+			SessionAnnotation.closeSession();
+			return sb2.toString();
+			}else{
+				System.out.println("无标签化结果！");
+				SessionAnnotation.closeSession();
+				return "";
+			}
+		}catch(Exception e){
+			SessionAnnotation.closeSession();
+			System.out.println("导出标签结果异常："+e);
+			return "";
+		}
+	}
+	
+	
 	
 
 }

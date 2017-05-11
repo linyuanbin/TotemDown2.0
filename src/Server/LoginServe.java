@@ -46,7 +46,7 @@ public class LoginServe extends HttpServlet {
 			System.out.print("登录服务器成功l ！");
 //			msg = "http://imgstore04.cdn.sogou.com/app/a/100520024/877e990117d6a7ebc68f46c5e76fc47a";
 //			out.write(msg);
-			BufferedReader br = request.getReader();
+			BufferedReader br = request.getReader(); 
 			
 			String str1 = null;
 			StringBuilder resource = new StringBuilder();
@@ -86,7 +86,7 @@ public class LoginServe extends HttpServlet {
 			} else if ((u.getState().trim()).equals("register")) {     // 注册
 				String userID = d.register(u);
 				System.out.println("注册情况：" + userID);
-				if (!userID.equals("")) {// 如果注册成功
+				if ((!userID.equals(""))) {// 如果注册成功
 					//msg = u.getUserID(); //注册成功反馈UserId 
 					u.setState("true");
 					String userfile=CreateJson.getUserJson(u);

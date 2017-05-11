@@ -3,6 +3,7 @@ package Server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -10,14 +11,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.ManagerDao;
+import dao.PictureDao;
 import daoimplement.ManagerImplement;
+import daoimplement.PictureImplement;
 import jsonUtil.CreateJson;
 import model.Manager;
+import model.Picture;
 import model.User;
 
 public class ManagerServer extends HttpServlet{
 	
 	private ManagerDao md=new ManagerImplement();
+	private PictureDao pd=new PictureImplement();
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse resp) throws ServletException, IOException {
@@ -41,12 +46,30 @@ public class ManagerServer extends HttpServlet{
 				System.out.println(str1);
 			}
 			
-			Manager m=CreateJson.getManager(br.toString().trim());
+			Manager m=CreateJson.getManager(sb.toString().trim());
 			
-			if(m.getState().equals("register")){ //注册
+			if(m.getState().equals("register")){ //注册  管理员注册只有数据库中有其对应身份证号的才允许注册
 				
-				
-				
+					if(m.getCheckId().equals("gb10086")){ //注册校验码正确
+						String mIdCard=md.register(m);
+						if(mIdCard.equals("")){ //用户id不存在
+						m.setState("false");
+						String managerJson=CreateJson.getManagerJson(m);
+						System.out.println("注册存入失败用户信息："+managerJson);
+						out.write(managerJson);
+						}else{//注册成功
+							m.setState("true");
+							String managerJson=CreateJson.getManagerJson(m);
+							System.out.println("注册成功用户信息"+managerJson);
+							out.write(managerJson);
+						}
+						
+					}else{ //注册校验码错误
+						m.setState("false");
+						String managerJson=CreateJson.getManagerJson(m);
+						System.out.println("校验码错误注册失败用户信息："+managerJson);
+						out.write(managerJson);
+					}
 				
 			}else if(m.getState().equals("login")){//登录
 			               // 登录
@@ -68,31 +91,49 @@ public class ManagerServer extends HttpServlet{
 					System.out.println("name"+m6.getmName());
 					System.out.println("name"+m6.toString());
 					jsonManager=CreateJson.getManagerJson(m6);
-//					System.out.println(jsonUser.toString());
-//					msg=jsonUser.toString().trim();
-					msg=m6.toString();
+					System.out.println("登录成功");
 					out.write(jsonManager);  //登录是向用户反馈User基本信息
 					//out.println(msg);
 					}
-					
-				
 			}else if(m.getState().equals("download")){ //导出标签
+				String finalMark=pd.selectPicturesFFN();
+				if(finalMark.equals("")){ //无标签化结果
+					out.write("");
+				}else{
+					finalMark="["+finalMark+"]";
+					System.out.println("发送标签化结果："+finalMark);
+					out.write(finalMark);
+				}
 				
 			}else if(m.getState().equals("upload")){ //上传照片
 				
-			}else{
-				String str2="500 NotFound";
+				
+				
+				
+			}else if(m.getState().equals("update")){//更新管理员资料 
+				boolean state=md.updateManager(m); 
+				Manager m2=new Manager();
+				String ss;
+				if(state){
+					ss="true";
+					System.out.println("管理员更新成功！");
+				}else{
+					ss="false";
+					System.out.println("管理员更新失败！");
+				}
+				m2.setState(ss);
+				String managerJson=CreateJson.getManagerJson(m2);
+				out.write(managerJson);
+			}else{ //没找到对应state的值
+				String str2="500 NotFound! Didn't find the state";
 				out.write(str2);
 			}
 			
-			 
-			
-		}else{
-			msg="404 Not Found"; //连接服务器失败
+		}else{ //连接服务器失败！
+			msg="404 Not Found! Connection server failed (User name or password error)"; //连接服务器失败
 			out.write(msg);
 		}
 			
-		
 	}
 	
 	

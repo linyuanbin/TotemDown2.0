@@ -116,8 +116,8 @@ public class CreateJson {
 		return manager;
 	}
 	
-	public static String getManagerJson(Manager m){
-		try{
+	public static String getManagerJson(Manager m){  
+		try{ 
 			String managerJson="";
 			Gson gson=gsons.get();
 			if(gson==null){

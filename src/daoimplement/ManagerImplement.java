@@ -18,24 +18,24 @@ public class ManagerImplement implements ManagerDao{
 	@Override
 	public String register(Manager m) {
 		Session session = SessionAnnotation.getSession();
+		session.beginTransaction();
 		String mIdCard = "";
-		if (m.getmTel() != null) { // 在完成注册之前确定该手机号是否已经注册,一个手机号只能注册一次
-			String sql = "select mIdCard from Manager where mTel='" + m.getmTel() + "'";
-			session.beginTransaction();
+		if (m.getmIdCard()!= null) { //验证身份证是否存在
+			String sql = "select mIdCard from Manager where mIdCard='" + m.getmIdCard() + "'";
 			List list = session.createQuery(sql).list();
 			if (!list.isEmpty()) {
+				System.out.println("用户身份证已 注册");
 				session.getTransaction().commit();
 				SessionAnnotation.closeSession();
 				return mIdCard;// 空的id
 			} else {
-				
 				try {
 					// session.beginTransaction();
 					session.save(m);
 					session.flush();
 					session.getTransaction().commit();
 					SessionAnnotation.closeSession();
-					return mIdCard;
+					return m.getCheckId();
 
 				} catch (Exception e) {
 					System.out.println(e);
@@ -69,11 +69,13 @@ public class ManagerImplement implements ManagerDao{
 			// session.getTransaction().commit();
 			SessionAnnotation.closeSession();
 			mIdCard="";
+			System.out.println("登录失败！");
 			return mIdCard;
 		}
 		mIdCard = (String) list.iterator().next();
 		session.getTransaction().commit();
 		SessionAnnotation.closeSession();
+		System.out.println("登录成功！");
 		return mIdCard;
 	}
 

@@ -16,6 +16,7 @@ import PictureAction.SearchPicture;
 import dao.PictureDao;
 import daoimplement.PictureImplement;
 import hibernateutil.SessionAnnotation;
+import jsonUtil.CreateJson;
 import model.Picture;
 
 public class TestPicture {
@@ -116,6 +117,15 @@ public class TestPicture {
 		for(Picture p:pictures){
 			System.out.println(p.getPAddress());
 		}
+	}
+	
+	@Test
+	public void testFinalmark(){
+		
+		String s=pd.selectPicturesFFN();
+		s="["+s+"]";
+		System.out.println(s);
+		
 	}
 	
 

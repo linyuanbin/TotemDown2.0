@@ -11,8 +11,16 @@ public class Manager {
 	private String mSex;//性别
 	private int mAge;//年龄
 	private String mWorkNum;//员工号
-	private String state;
+	private String state; 
+	private String checkId; //管理员注册时需要用到的校验码
 	
+	
+	public String getCheckId() {
+		return checkId;
+	}
+	public void setCheckId(String checkId) {
+		this.checkId = checkId;
+	}
 	public String getState() {
 		return state;
 	}

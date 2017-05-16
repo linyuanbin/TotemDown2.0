@@ -203,12 +203,16 @@ public class TestUser {
 	 
 	 @Test
 	 public void TestCreateJson(){
-		 User u=d.showUser("Thu Apr 27 20:28:09 CST 201731ZDD");
+		/* User u=d.showUser("Thu Apr 27 20:28:09 CST 201731ZDD");
 		 User u2=new User();
 		 u2.setUserName("scns");
 		 u2.setUserID("scsic");
 		 String s=CreateJson.getUserJson(u);  
-		 System.out.println(s);
+		 System.out.println(s);*/
+		 
+		 String s="{\"state\":\"mark\",\"TabID\":\"Thu Apr 27 20:28:09 CST 201731ZDDSat Apr 29 15:54:58 CST 2017VGio1\",\"UserID\":\"Thu Apr 27 20:28:09 CST 201731ZDD\",\"PID\":\"Sat Apr 29 15:54:58 CST 2017VGio1\",\"MarkName\":\"ÌìÌì·É³µ\"}";
+		 User u=CreateJson.getUser(s);
+		 System.out.println("scsc---"+u.getPID());
 		 
 	 }
 

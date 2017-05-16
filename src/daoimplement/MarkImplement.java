@@ -27,9 +27,8 @@ public class MarkImplement implements MarkDao{
 			Picture p= pd.selectSinglePictureFID(Pid);
 			m.setUser(u);
 			m.setPicture(p);
-			m.setTabId(UserId+Pid);
 			m.setMarkName(markName);
-			session.saveOrUpdate(m);
+			session.save(m);
 			session.getTransaction().commit();
 			SessionAnnotation.closeSession();
 			return true;

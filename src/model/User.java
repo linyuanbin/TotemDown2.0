@@ -22,6 +22,8 @@ public class User {
 	private String UserHobby; //爱好
 	private String UserHeadPortr;//用户头像
 	private String state;
+	private String PID;//
+	private String MarkName;
 	//存储多对象图片的数组set
 	private Set<Picture> pictures=new HashSet<>();
 	//private String User_WeChat; //微信号
@@ -127,6 +129,24 @@ public class User {
 
 	public void setPictures(Set<Picture> pictures) {
 		this.pictures = pictures;
+	}
+	
+
+	public String getPID() {
+		return PID;
+	}
+
+	public void setPID(String pID) {
+		PID = pID;
+	}
+	
+
+	public String getMarkName() {
+		return MarkName;
+	}
+
+	public void setMarkName(String markName) {
+		MarkName = markName;
 	}
 
 	@Override

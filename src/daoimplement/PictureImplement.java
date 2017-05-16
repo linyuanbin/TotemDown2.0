@@ -91,13 +91,12 @@ public class PictureImplement implements PictureDao {
 
 	@Override
 	public Picture selectSinglePictureFID(String PID) {  //ID²éÑ¯Í¼Æ¬
-		
+		Session session=SessionAnnotation.getSession();
+		session.beginTransaction();
 		try{
-			Session session=SessionAnnotation.getSession();
-			session.beginTransaction();
+			
 			Picture p=(Picture) session.get(Picture.class,PID);
 			session.getTransaction().commit();
-			session.flush();
 			SessionAnnotation.closeSession();
 			return p;
 		}catch(Exception e){

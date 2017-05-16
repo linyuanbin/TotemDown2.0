@@ -104,6 +104,17 @@ public class CreateJson {
 		}
 	}
 	
+	public static Mark getMark(String json){ 
+		Mark mark=new Mark(); 
+		Gson gson=gsons.get(); 
+		if(gson==null){ 
+			gson=new Gson();   
+			gsons.set(gson);   
+		}
+		mark=gson.fromJson(json, Mark.class); 
+		return mark;
+	}
+	
 	
 	public static Manager getManager(String json){ 
 		Manager manager=new Manager(); 

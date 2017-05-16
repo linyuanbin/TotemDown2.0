@@ -122,10 +122,12 @@ public class TestPicture {
 	@Test
 	public void testFinalmark(){
 		
-		String s=pd.selectPicturesFFN();
+		/*String s=pd.selectPicturesFFN();
 		s="["+s+"]";
 		System.out.println(s);
-		
+		*/
+		Picture p=pd.selectSinglePictureFID("Sat Apr 29 15:54:58 CST 2017VGio1");
+		System.out.println(p.getPName());
 	}
 	
 

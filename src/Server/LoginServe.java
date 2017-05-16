@@ -10,15 +10,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import action.PushPicture;
+import dao.MarkDao;
+import dao.PictureDao;
 import dao.UserDao;
+import daoimplement.MarkImplement;
+import daoimplement.PictureImplement;
 import daoimplement.UserImplement;
 import jsonUtil.CreateJson;
+import model.Mark;
 import model.Picture;
 import model.User;
 
 public class LoginServe extends HttpServlet {
 
 	private UserDao d = new UserImplement();
+	MarkDao md=new MarkImplement();
+	private PictureDao pd=new PictureImplement();
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -57,6 +64,9 @@ public class LoginServe extends HttpServlet {
 			}
 
 			User u = CreateJson.getUser(resource.toString());
+			
+			if(u.getState().trim().equals("mark")) System.out.println("标签");
+			
 			if ((u.getState().trim()).equals("login")) {                 // 登录
 				String UserId = d.login(u.getUserName(), u.getUserPassword());
 				String jsonUser="";
@@ -116,18 +126,43 @@ public class LoginServe extends HttpServlet {
 				 pushPictureJson="["+pushPictureJson+"]";
 				 System.out.println("推送："+pushPictureJson); 
 				 out.write(pushPictureJson);
-			}else if(u.getState().equals("mark")){             //打标签
+			}else if(u.getState().trim().equals("mark".trim())){ //打标签
+				System.out.println("打標簽");
 				User user=d.showUser(u.getUserID()); 
-				Picture p=CreateJson.getPicture(resource.toString());
-				user.getPictures().add(p);
+				System.out.println("打标签的用戶"+user.getUserName());
+				System.out.println("PID:"+u.getPID());
+				Picture p=pd.selectSinglePictureFID(u.getPID().trim());
+				System.out.println("被标签的图片"+p.getPName());
+				Mark m=new Mark();
+				m.setTabId(u.getUserID().trim()+u.getPID().trim());
+				m.setMarkName(u.getMarkName().trim());
+				m.setUser(user);
+				m.setPicture(p);
+				boolean b=md.insertMark(m);
+				//boolean b=md.insertIntoMark(u.getUserID().trim(),u.getPID().trim(),u.getMarkName().trim()); //存入标签
+				if(b){//标签成功
+					User user2=new User();
+					user2.setState("true");
+					System.out.println("标签成功");
+					String s=CreateJson.getUserJson(user2);
+					out.write(s);
+				}else{ //标签失败
+					System.out.println("标签失败");
+					User user2=new User();
+					user2.setState("false");
+					String s=CreateJson.getUserJson(user2);
+					out.write(s);
+				}//标签失败
+				
 			}else{
-				String str2="500 NotFound"; 
+				System.out.println("没找到state");
+				String str2="500 NotFound the state"; 
 				out.write(str2);
 			}
 
 		}else{
 			System.out.println("登入服务器失败");
-			msg = "404 NotFound";       //注册失败回馈
+			msg = "404 NotFound connect username or password error";       //注册失败回馈
 			out.write(msg);
 		}
 		// out.print(msg); //传送给客户端数据

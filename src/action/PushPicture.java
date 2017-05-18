@@ -26,21 +26,21 @@ public class PushPicture {//推送图片
 		List list=query.list();
 		System.out.println("历史记录数目："+list.size()+"  "+list.toString());
 		//List list=session.createQuery(sql).list();
-		if(list.size()==0||list.size()<=5) {  //新用戶，不符合针对性推送，随机推送
+		if(list.size()<=5) {  //新用戶，不符合针对性推送，随机推送
 			//SELECT * FROM T_USER  ORDER BY  RAND() LIMIT 10  随机查找10条记录
 			
 			//String sql2="select PID,PAddress from Picture  ORDER BY RAND()"; //从数据库随机获取20条图片信息
 			String hql2="from Picture where FinalMarkName is null order by rand()";//只有没有确定最终标签的图片需要推送  where FinalMarkName is null
 			Query q=session.createQuery(hql2);
 			q.setFirstResult(0);  // 从第0条记录开始取
-		      q.setMaxResults(10); // 取20条记录
+		      q.setMaxResults(12); // 取20条记录
 			List<Picture> pictures=q.list();
 			/*for(Picture p:pictures){
 				String s=CreateJson.getPictureJson(p);
 			
 				jsonPicture.append(s+",");
 			}*/
-			for(int i=0;i<pictures.size();i++){ 
+			for(int i=0;i<pictures.size();i++){
 				if(i<(pictures.size()-1)){  
 					String s=CreateJson.getPictureJson(pictures.get(i));
 					jsonPicture.append(s+",");
@@ -56,8 +56,7 @@ public class PushPicture {//推送图片
 			//算法推荐
 			
 			
-			
-			System.out.println("满足条件"); 
+			System.out.println("满足针对性条件"); 
 			SessionAnnotation.closeSession();
 			return jsonPicture.toString();
 		}

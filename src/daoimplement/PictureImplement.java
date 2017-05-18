@@ -51,18 +51,18 @@ public class PictureImplement implements PictureDao {
 	}
 
 	@Override
-	public boolean deletePicture(String PID) {  //删除图片
+	public boolean deletePicture(String PID) {  //删除图片 
 		Session session=SessionAnnotation.getSession();
 		session.beginTransaction();
 		String sql="select PID from Picture where PID='"+PID+"'";  //擦看是否存在该图片
 		List list=session.createQuery(sql).list();
 		
-		if(list.isEmpty()){ //如果空则说明不存在
-			SessionAnnotation.closeSession();
+		if(list.isEmpty()){ //如果空则说明不存在 
+			SessionAnnotation.closeSession(); 
 			return false;
 		}
-		//"delete from User where User_ID='"+User_ID+"'";
-		sql="delete from Picture where UserID='"+PID+"'";
+		//"delete from User where User_ID='"+User_ID+"'"; 
+		sql="delete from Picture where UserID='"+PID+"'"; 
 		Query query=session.createQuery(sql);
 		query.executeUpdate();
 		session.getTransaction().commit(); 

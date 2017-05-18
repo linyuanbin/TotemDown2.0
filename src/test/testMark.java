@@ -22,17 +22,20 @@ public class testMark {
 	public void test1(){
 		
 		User u=ud.showUser("Thu Apr 27 20:28:09 CST 201731ZDD");
-		Picture p=pd.selectSinglePictureFID("Sat Apr 29 15:54:53 CST 2017EDEkG");
+		Picture p=pd.selectSinglePictureFID("Sat Apr 29 15:54:53 CST 20176OXXF");
 		Mark m=new Mark();
 		m.setUser(u);
 		m.setPicture(p);
-		m.setTabId("Thu Apr 27 20:28:09 CST 201731ZDD"+"Sat Apr 29 15:54:53 CST 2017EDEkG");
-		m.setMarkName("取款机");
+		//m.setTabId("Thu Apr 27 20:28:09 CST 201731ZDD"+"Sat Apr 29 15:54:53 CST 2017EDEkG");
+		m.setTabId(u.getUserID()+p.getPID());
+		m.setMarkName("测试1");
 		m.setMarkDate(new Date());
 //		boolean b=md.insertIntoMark("Thu Apr 27 20:28:09 CST 201731ZDD", "Sat Apr 29 15:54:53 CST 2017EDEkG", "atm机");
 		boolean b=md.insertMark(m); 
 		//boolean b=md.updateMark(m);
 		if(b){
+			u.setUserIntegral(u.getUserIntegral()+1);
+			ud.updateUser(u);
 			System.out.println("保存成功！");
 		}else{
 			System.out.println("保存失败！");

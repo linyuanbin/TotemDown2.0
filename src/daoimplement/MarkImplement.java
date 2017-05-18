@@ -128,8 +128,8 @@ public class MarkImplement implements MarkDao{
 		Mark m=new Mark();
 		try{
 			m=(Mark)session.get(Mark.class,TabId);
-			session.getTransaction().commit();
-			SessionAnnotation.closeSession();
+			session.getTransaction().commit(); 
+			SessionAnnotation.closeSession(); 
 			return m;
 		}catch(Exception e){
 			System.out.println(e);

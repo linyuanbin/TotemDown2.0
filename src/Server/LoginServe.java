@@ -3,6 +3,7 @@ package Server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -127,20 +128,29 @@ public class LoginServe extends HttpServlet {
 				 System.out.println("推送："+pushPictureJson); 
 				 out.write(pushPictureJson);
 			}else if(u.getState().trim().equals("mark".trim())){ //打标签
-				System.out.println("打標簽");
-				User user=d.showUser(u.getUserID()); 
+				System.out.println("打标签模块");
+				User user=d.showUser(u.getUserID().trim()); 
 				System.out.println("打标签的用戶"+user.getUserName());
-				System.out.println("PID:"+u.getPID());
 				Picture p=pd.selectSinglePictureFID(u.getPID().trim());
 				System.out.println("被标签的图片"+p.getPName());
 				Mark m=new Mark();
-				m.setTabId(u.getUserID().trim()+u.getPID().trim());
 				m.setMarkName(u.getMarkName().trim());
 				m.setUser(user);
 				m.setPicture(p);
+				m.setMarkDate(new Date());
+				m.setTabId(user.getUserID().trim()+p.getPID());
+				boolean a=false;
+//				if((!(m.getMarkName().trim().equals("")))||(!(m.getMarkName().trim()==null))){
+//					a=true;
+//				}
+//				boolean b=false;
+//				if(a){
 				boolean b=md.insertMark(m);
-				//boolean b=md.insertIntoMark(u.getUserID().trim(),u.getPID().trim(),u.getMarkName().trim()); //存入标签
+//				}
+//				boolean b=md.insertIntoMark(u.getUserID().trim(),u.getPID().trim(),u.getMarkName().trim()); //存入标签
 				if(b){//标签成功
+					user.setUserIntegral(user.getUserIntegral()+1); //成功标签一次积分加一
+					d.updateUser(user);
 					User user2=new User();
 					user2.setState("true");
 					System.out.println("标签成功");

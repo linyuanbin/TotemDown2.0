@@ -18,6 +18,7 @@ import daoimplement.MarkImplement;
 import daoimplement.PictureImplement;
 import daoimplement.UserImplement;
 import jsonUtil.CreateJson;
+import model.ImageList;
 import model.Mark;
 import model.Picture;
 import model.User;
@@ -63,12 +64,12 @@ public class LoginServe extends HttpServlet {
 				resource.append(str1);
 				System.out.println(str1);// 原样输出读到的内容
 			}
-
-			User u = CreateJson.getUser(resource.toString());
+			System.out.println("接收到的数据"+resource.toString());
+			User u = CreateJson.getUser(resource.toString().trim());
+			System.out.println("用户状态值"+u.getState());
+			//if(u.getState().trim().equals("mark")) System.out.println("标签");
 			
-			if(u.getState().trim().equals("mark")) System.out.println("标签");
-			
-			if ((u.getState().trim()).equals("login")) {                 // 登录
+			if ((u.getState().trim()).equals("login")) {                 // 登录1
 				String UserId = d.login(u.getUserName(), u.getUserPassword());
 				String jsonUser="";
 				if(UserId.equals("")){
@@ -82,7 +83,7 @@ public class LoginServe extends HttpServlet {
 					out.write(userfile);
 				}else{
 				System.out.println("密码正确 用户ID" + UserId);
-				User u6=d.showUser(UserId.trim());  //获取对应ID的User
+				User u6=d.showUser(UserId.trim());  //获取对应ID的User 
 				u6.setState("true");
 				System.out.println("name"+u6.getUserName());
 				System.out.println("name"+u6.toString());
@@ -94,7 +95,7 @@ public class LoginServe extends HttpServlet {
 				//out.println(msg);
 				}
 				
-			} else if ((u.getState().trim()).equals("register")) {     // 注册
+			} else if ((u.getState().trim()).equals("register")) {     // 注册2
 				String userID = d.register(u);
 				System.out.println("注册情况：" + userID);
 				if ((!userID.equals(""))) {// 如果注册成功
@@ -106,28 +107,30 @@ public class LoginServe extends HttpServlet {
 				} else {
 					//msg = "false";       //注册失败回馈
 					u.setState("false");
-					String s=CreateJson.getUserJson(u);
+					String s=CreateJson.getUserJson(u); 
 					System.out.println("注册失败用户信息："+s); 
 					out.write(s);
 				}
-			} else if ((u.getState().trim()).equals("update")) {        // 更新用户
+			} else if ((u.getState().trim()).equals("update")) {        // 更新用户3
 				/*
 				 * String UserId=d.getUserID(u.getUserTel());
 				 * System.out.println("查询用户id"+UserId);
 				 */
 				d.updateUser(u);
 				System.out.println("用户生日：" + u.getUserBirthday().toLocaleString());
-			}else if((u.getState().trim()).equals("request".trim())){       //推送请求
+			}else if((u.getState().trim()).equals("request".trim())){       //推送请求4
+				System.out.println("request模块执行1");
 				 String pushPictureJson=PushPicture.getPush(u.getUserID());
+				 System.out.println("request模块执行2");
 				 pushPictureJson="["+pushPictureJson+"]";
 				 System.out.println("推送："+pushPictureJson); 
 				 out.write(pushPictureJson);
-			}else if((u.getState().trim()).equals("request1".trim())){       //推送一张
+			}else if((u.getState().trim()).equals("request1".trim())){       //推送一张5
 				 String pushPictureJson=PushPicture.getSinglePush(u.getUserID());
 				 pushPictureJson="["+pushPictureJson+"]";
 				 System.out.println("推送："+pushPictureJson); 
-				 out.write(pushPictureJson);
-			}else if(u.getState().trim().equals("mark".trim())){ //打标签
+				 out.write(pushPictureJson); 
+			}else if(u.getState().trim().equals("mark".trim())){ //打标签6
 				System.out.println("打标签模块");
 				User user=d.showUser(u.getUserID().trim()); 
 				System.out.println("打标签的用戶"+user.getUserName());
@@ -164,10 +167,18 @@ public class LoginServe extends HttpServlet {
 					out.write(s);
 				}//标签失败
 				
+			}else if(u.getState().trim().equals("upload".trim())){ //上传头像
+				System.out.println("上传头像 ");
+				ImageList imagelist=CreateJson.getImageList(resource.toString().trim());
+				
 			}else{
 				System.out.println("没找到state");
 				String str2="500 NotFound the state"; 
-				out.write(str2);
+				User user=new User();
+				user.setState("false");
+				String userJson=CreateJson.getUserJson(user);
+				out.write(userJson);
+				//out.write(str2);
 			}
 
 		}else{

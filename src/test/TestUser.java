@@ -210,9 +210,10 @@ public class TestUser {
 		 String s=CreateJson.getUserJson(u);  
 		 System.out.println(s);*/
 		 
-		 String s="{\"state\":\"mark\",\"TabID\":\"Thu Apr 27 20:28:09 CST 201731ZDDSat Apr 29 15:54:58 CST 2017VGio1\",\"UserID\":\"Thu Apr 27 20:28:09 CST 201731ZDD\",\"PID\":\"Sat Apr 29 15:54:58 CST 2017VGio1\",\"MarkName\":\"天天飞车\"}";
+		//String s="{\"state\":\"mark\",\"TabID\":\"Thu Apr 27 20:28:09 CST 201731ZDDSat Apr 29 15:54:58 CST 2017VGio1\",\"UserID\":\"Thu Apr 27 20:28:09 CST 201731ZDD\",\"PID\":\"Sat Apr 29 15:54:58 CST 2017VGio1\",\"MarkName\":\"天天飞车\"}";
+		 String s="{\"state\":\"request\"}";
 		 User u=CreateJson.getUser(s);
-		 System.out.println("scsc---"+u.getPID());
+		 System.out.println("state---"+u.getState());
 		 
 	 }
 

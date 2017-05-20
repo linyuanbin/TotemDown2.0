@@ -8,6 +8,8 @@ import org.omg.Messaging.SyncScopeHelper;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import translateUtil.Translate;
+
 
 public class test {
 	  String ur="http://apicn.imageplusplus.com/analyze?"
@@ -115,7 +117,9 @@ public class test {
 		Scanner scanner=new Scanner(image);
 		//scanner.useDelimiter(":");
 		while(scanner.hasNext()){
-			System.out.println(scanner.nextLine());
+			String s=scanner.nextLine();
+			String s2=Translate.getTranslate(s);
+			System.out.println(s+":"+s2);
 		}
 		
 		

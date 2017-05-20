@@ -19,10 +19,10 @@ public class PushPicture {//推送图片
 		StringBuffer jsonPicture=new StringBuffer();
 		//jsonPicture.append("");
 		//String sql="select PID from Mark where USERID ='"+UserId+"'";
-		String hql="from Mark where UserId=?";//+UserId+"'";
+		String hql="from Mark where UserId='"+UserId.trim()+"'";//+UserId+"'";
 		Query query=session.createQuery(hql);
 		//query.setParameter(0,UserId);
-		query.setString(0,UserId);
+		//query.setString(0,UserId);
 		List list=query.list();
 		System.out.println("历史记录数目："+list.size()+"  "+list.toString());
 		//List list=session.createQuery(sql).list();
@@ -32,7 +32,7 @@ public class PushPicture {//推送图片
 			//String sql2="select PID,PAddress from Picture  ORDER BY RAND()"; //从数据库随机获取20条图片信息
 			String hql2="from Picture where FinalMarkName is null order by rand()";//只有没有确定最终标签的图片需要推送  where FinalMarkName is null
 			Query q=session.createQuery(hql2);
-			q.setFirstResult(0);  // 从第0条记录开始取
+			q.setFirstResult(0);  // 从第0条记录开始取 
 		      q.setMaxResults(12); // 取20条记录
 			List<Picture> pictures=q.list();
 			/*for(Picture p:pictures){
@@ -40,7 +40,7 @@ public class PushPicture {//推送图片
 			
 				jsonPicture.append(s+",");
 			}*/
-			for(int i=0;i<pictures.size();i++){
+			for(int i=0;i<pictures.size();i++){ 
 				if(i<(pictures.size()-1)){  
 					String s=CreateJson.getPictureJson(pictures.get(i));
 					jsonPicture.append(s+",");

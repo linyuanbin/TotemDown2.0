@@ -10,11 +10,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import action.ManagerAction;
 import dao.ManagerDao;
 import dao.PictureDao;
 import daoimplement.ManagerImplement;
 import daoimplement.PictureImplement;
 import jsonUtil.CreateJson;
+import model.ImageList;
 import model.Manager;
 import model.Picture;
 import model.User;
@@ -47,7 +49,8 @@ public class ManagerServer extends HttpServlet{
 			}
 			
 			Manager m=CreateJson.getManager(sb.toString().trim());
-			
+			System.out.println("管理员状态"+m.getState());
+			System.out.println(m.getState());
 			if(m.getState().equals("register")){ //注册  管理员注册只有数据库中有其对应身份证号的才允许注册
 				
 					if(m.getCheckId().equals("gb10086")){ //注册校验码正确
@@ -106,9 +109,20 @@ public class ManagerServer extends HttpServlet{
 				}
 				
 			}else if(m.getState().equals("upload")){ //上传照片
-				
-				
-				
+				System.out.println("upload执行");
+				ImageList imagelist=CreateJson.getImageList(sb.toString().trim());
+				boolean b=ManagerAction.SaveImage(imagelist);
+				if(b){ //图片保存成功
+					Manager ma=new Manager();
+					ma.setState("true");
+					String majson=CreateJson.getManagerJson(ma);
+					out.write(majson);
+				}else{//图片保存失败
+					Manager ma=new Manager();
+					ma.setState("false");
+					String majson=CreateJson.getManagerJson(ma);
+					out.write(majson);
+				}
 				
 			}else if(m.getState().equals("update")){//更新管理员资料 
 				boolean state=md.updateManager(m); 
@@ -126,6 +140,10 @@ public class ManagerServer extends HttpServlet{
 				out.write(managerJson);
 			}else{ //没找到对应state的值
 				String str2="500 NotFound! Didn't find the state";
+				Manager ma=new Manager();
+				ma.setState("false");
+				String majson=CreateJson.getManagerJson(ma);
+				out.write(majson);
 				out.write(str2);
 			}
 			
@@ -135,7 +153,6 @@ public class ManagerServer extends HttpServlet{
 		}
 			
 	}
-	
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

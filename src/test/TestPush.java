@@ -12,7 +12,6 @@ public class TestPush {
 		String str=PushPicture.getPush("Thu Apr 27 20:28:09 CST 201731ZDD");
 		System.out.println("history:"+str);
 		
-		
 	}
 	
 	

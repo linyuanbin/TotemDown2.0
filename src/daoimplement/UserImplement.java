@@ -52,6 +52,7 @@ public class UserImplement implements UserDao {
 	@Override
 	public String login(String UserName, String Password) {
 		Session session = SessionAnnotation.getSession();
+		session.beginTransaction();
 		String sql;
 		String userId = "";
 
@@ -62,7 +63,7 @@ public class UserImplement implements UserDao {
 		} else {
 			sql = "select UserID from User where UserName='" + UserName + "'and UserPassword='" + Password + "'";
 		}
-		session.beginTransaction();
+	
 		List list = session.createQuery(sql).list();
 		if (list.isEmpty()) {
 			// session.getTransaction().commit();

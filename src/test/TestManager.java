@@ -44,8 +44,8 @@ public class TestManager {
 			System.out.println("iamgefile"+image.getImagefile());
 		}
 		
-		boolean b=ManagerAction.SaveImage(imagelist);
-		System.out.println("zhuang  "+b);
+		boolean b=ManagerAction.SaveImage(imagelist); 
+		System.out.println("zhuang  "+b); 
 		
 //		Manager m=new Manager(); 
 //		m.setmEmail("dsds"); 

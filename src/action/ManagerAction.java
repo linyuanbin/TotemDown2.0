@@ -14,7 +14,7 @@ import model.ImageList;
 
 public class ManagerAction {
 	public static boolean SaveImage(ImageList imagelist){
-		List files=imagelist.getList();
+		List files=imagelist.getList();//得到图片文件的二进制
 		if(files.size()==0){
 			return false;
 		}else{
@@ -31,7 +31,7 @@ public class ManagerAction {
 		
 	}
 	
-
+	
     /**
      * 将接收的字符串转换成图片保存
      * @param imgStr 二进制流转换的字符串
@@ -91,7 +91,7 @@ try {
     public static int saveToImgByBytes(File imgFile,String imgPath,String imgName){
  
         int stateInt = 1;
-        if(imgFile.length() > 0){
+        if(imgFile.length() > 0){  
             try {
                 File file=new File(imgPath,imgName);//可以是任何图片格式.jpg,.png等
                 FileOutputStream fos=new FileOutputStream(file);

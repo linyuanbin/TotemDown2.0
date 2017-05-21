@@ -73,8 +73,8 @@ public class LoginServe extends HttpServlet {
 				String UserId = d.login(u.getUserName(), u.getUserPassword());
 				String jsonUser="";
 				if(UserId.equals("")){
-					System.out.println("密码错误！");
-					msg=UserId;//空值
+					System.out.println("密码错误！"); 
+					msg=UserId;//空值 
 					User u2=new User();//创建一个空的User对象给客户端
 					u2.setState("false");
 					u2.setUserID(" ");
@@ -119,7 +119,8 @@ public class LoginServe extends HttpServlet {
 				d.updateUser(u);
 				System.out.println("用户生日：" + u.getUserBirthday().toLocaleString());
 			}else if((u.getState().trim()).equals("request".trim())){       //推送请求4
-				System.out.println("request模块执行1");
+				//System.out.println("request模块执行1");
+				System.out.println("requesemodel执行");
 				 String pushPictureJson=PushPicture.getPush(u.getUserID());
 				 System.out.println("request模块执行2");
 				 pushPictureJson="["+pushPictureJson+"]";
@@ -127,7 +128,7 @@ public class LoginServe extends HttpServlet {
 				 out.write(pushPictureJson);
 			}else if((u.getState().trim()).equals("request1".trim())){       //推送一张5
 				 String pushPictureJson=PushPicture.getSinglePush(u.getUserID());
-				 pushPictureJson="["+pushPictureJson+"]";
+				 pushPictureJson="["+pushPictureJson+"]";    
 				 System.out.println("推送："+pushPictureJson); 
 				 out.write(pushPictureJson); 
 			}else if(u.getState().trim().equals("mark".trim())){ //打标签6
